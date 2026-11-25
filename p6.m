@@ -1,25 +1,44 @@
-f = 5;
+
+clc;
+clear;
+close all;
+
+
+A = 1;
+fm = 5;
+
 t = 0:0.001:1;
-xa = sin(2*pi*f*t);
+x = A*sin(2*pi*fm*t);
 
-fs = 20;                       % fs > 2f,  reconstruction
-ts = 0:1/fs:1;
-xs = sin(2*pi*f*ts);
 
-tr = 0:0.001:1;
-xr = interp1(ts, xs, tr, 'spline');    % spline interpolation
+Fs = 20;
+Ts = 1/Fs;
+
+ts = 0:Ts:1;
+xs = A*sin(2*pi*fm*ts);
+
+
+xr = interp1(ts, xs, t, 'spline');
+
 
 figure;
-subplot(3,1,1);
-plot(t,xa,'b','LineWidth',1.5);
-title('Original Analog Signal'); xlabel('t'); ylabel('Amplitude'); grid on;
 
-subplot(3,1,2);
-stem(ts,xs,'r','LineWidth',1.5,'filled');
-title(['Sampled Signal (fs = ' num2str(fs) ' Hz)']); xlabel('t'); ylabel('Amplitude'); grid on;
+subplot(2,1,1);
+plot(t,x,'b');
+hold on;
+stem(ts,xs,'r','filled');
+title('Original Signal and Sampled Signal');
+xlabel('Time (seconds)');
+ylabel('Amplitude');
+legend('Original Signal','Samples');
+grid on;
 
-subplot(3,1,3);
-plot(t,xa,'b','LineWidth',1.5); hold on;
-plot(tr,xr,'r--','LineWidth',1.5);
-legend('Original','Reconstructed');
-title('Original vs Reconstructed (spline)'); xlabel('t'); ylabel('Amplitude'); grid on;
+subplot(2,1,2);
+plot(t,x,'b','LineWidth',1.5);
+hold on;
+plot(t,xr,'r--','LineWidth',1.5);
+title('Original vs Reconstructed Signal');
+xlabel('Time (seconds)');
+ylabel('Amplitude');
+legend('Original Signal','Reconstructed Signal');
+grid on;
